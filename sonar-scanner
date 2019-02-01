@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+$detector = new \SonarScanner\Device\Detector();
+
+$app = new \SonarScanner\App($detector);
+
+$app->run($argv);
