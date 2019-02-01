@@ -178,6 +178,10 @@ class App
 
         echo "Running scanner...\n";
 
-        exec($bin);
+        exec($bin, $output);
+
+        foreach ($output as $line) {
+            echo "$line\n";
+        };
     }
 }
