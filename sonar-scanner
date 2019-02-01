@@ -7,4 +7,4 @@ $detector = new \SonarScanner\Device\Detector();
 
 $app = new \SonarScanner\App($detector);
 
-$app->run($argv);
+$app->run();

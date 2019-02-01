@@ -57,10 +57,8 @@ class App
     /**
      * @return void
      */
-    public function run(array $arguments)
+    public function run()
     {
-        // TODO: parse arguments, in order to be able to modify the version and the properties path
-
         $this->version = new Version(Version::DEFAULT_VERSION);
 
         $this->os = $this->detector->getOperatingSystem();
