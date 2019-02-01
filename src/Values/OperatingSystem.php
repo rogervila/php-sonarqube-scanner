@@ -31,11 +31,8 @@ class OperatingSystem
         $this->setValue($os);
     }
 
-    /**
-     * @return array
-     */
-    public function getlist()
+    public function equals(OperatingSystem $system)
     {
-        return $this->list;
+        return $system->value == $this->value;
     }
 }

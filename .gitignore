@@ -3,3 +3,5 @@ composer.lock
 junit-logfile.xml
 clover.xml
 /tmp
+sonar-project.properties
+.scannerwork
