@@ -8,7 +8,6 @@ environment:
         - php_ver: 7.3.1
         - php_ver: 7.2.14
         - php_ver: 7.1.26
-          SKIP_LINT_TEST_CASES: 1
 
 cache:
     - '%APPDATA%\Composer'
@@ -31,8 +30,8 @@ install:
     - echo extension=php_openssl.dll >> php.ini
     - echo extension=php_mbstring.dll >> php.ini
     - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/composer.phar)
+    - php C:\tools\composer.phar --version
     - cd C:\projects\app
-    - php C:\tools\composer.phar global show hirak/prestissimo -q || php C:\tools\composer.phar global require hirak/prestissimo
 
 before_test:
     - cd C:\projects\app
@@ -42,5 +41,3 @@ before_test:
 test_script:
     - cd C:\projects\app
     - vendor\bin\phpunit
-    - set PHP_CS_FIXER_FUTURE_MODE=1
-    - php app --diff --dry-run -v fix
