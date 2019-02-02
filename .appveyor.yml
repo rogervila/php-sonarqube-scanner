@@ -1,5 +1,5 @@
 build: false
-version: dev-{build}
+version: appveyor-{branch}-{build}
 shallow_clone: false
 clone_folder: C:\projects\app
 
@@ -27,7 +27,6 @@ install:
     - echo date.timezone="UTC" >> php.ini
     - echo memory_limit=512M >> php.ini
     - echo extension_dir=ext >> php.ini
-    - echo extension=php_zip.dll >> php.ini
     - echo extension=php_curl.dll >> php.ini
     - echo extension=php_openssl.dll >> php.ini
     - echo extension=php_mbstring.dll >> php.ini
