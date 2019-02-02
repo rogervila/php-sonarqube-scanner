@@ -42,4 +42,5 @@ test_script:
     - cd C:\projects\app
     - vendor\bin\phpunit
     - chmod +x sonar-scanner
+    - touch sonar-project.properties
     - php sonar-scanner
