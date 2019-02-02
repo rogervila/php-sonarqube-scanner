@@ -15,7 +15,7 @@ before_script:
 
 script:
   - vendor/bin/phpunit
-  - sonar-scanner -Dsonar.projectKey=rogervila_php-sonarqube-scanner -Dsonar.sources=. -Dsonar.exclusions='index.php, vendor/**, tests/**' -Dsonar.php.tests.reportPath=junit-logfile.xml -Dsonar.php.coverage.reportPaths=clover.xml
+  - sonar-scanner -Dsonar.projectKey=rogervila_php-sonarqube-scanner -Dsonar.sources=. -Dsonar.exclusions='tmp/**, vendor/**, tests/**' -Dsonar.php.tests.reportPath=junit-logfile.xml -Dsonar.php.coverage.reportPaths=clover.xml
 
 addons:
   sonarcloud:
