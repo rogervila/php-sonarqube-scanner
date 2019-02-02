@@ -128,9 +128,7 @@ class App
      */
     private function unzip()
     {
-        $result = $this->zip->open($this->zipFile);
-
-        if ($result === true) {
+        if ($this->zip->open($this->zipFile) === true) {
             $this->zip->extractTo(self::EXTRACT_PATH);
             $this->zip->close();
         } else {
@@ -174,11 +172,9 @@ class App
             ? '.bat'
             : '';
 
-        $bin = self::EXTRACT_PATH . $this->folderName . self::EXECUTION_ROUTE . $extension;
-
         echo "Running scanner...\n";
 
-        exec($bin, $output);
+        exec(self::EXTRACT_PATH . $this->folderName . self::EXECUTION_ROUTE . $extension, $output);
 
         echo implode("\n", $output) . "\n";
     }
