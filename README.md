@@ -6,9 +6,20 @@
 
 # Run SonarQube Scanner with composer
 
-## About
+**Install the package as a dev requirement**
 
-> WIP!
+```
+composer install rogervila/php-sonarqube-scanner --dev
+```
+
+> Make sure you have a `sonar-project.properties` on your project root!
+
+
+**Run with composer**
+
+```
+vendor/bin/sonar-scanner
+```
 
 ## License
 
