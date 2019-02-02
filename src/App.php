@@ -180,8 +180,6 @@ class App
 
         exec($bin, $output);
 
-        foreach ($output as $line) {
-            echo "$line\n";
-        };
+        echo implode("\n", $output) . "\n";
     }
 }
