@@ -55,6 +55,11 @@ class App
     private $zipFile;
 
     /**
+     * @var string
+     */
+    private $executionPath;
+
+    /**
      * @param DeviceDetectorInterface $detector
      */
     public function __construct(DeviceDetectorInterface $detector)
@@ -66,8 +71,10 @@ class App
     /**
      * @return void
      */
-    public function run()
+    public function run(string $executionPath)
     {
+        $this->executionPath = $executionPath;
+
         $this->version = new Version(Version::DEFAULT_VERSION);
 
         $this->os = $this->detector->getOperatingSystem();
@@ -164,7 +171,7 @@ class App
      */
     private function execute()
     {
-        if (!file_exists(getcwd() . DIRECTORY_SEPARATOR . self::PROPERTIES_FILE)) {
+        if (!file_exists($this->executionPath . DIRECTORY_SEPARATOR . self::PROPERTIES_FILE)) {
             throw new PropertiesFileNotFoundException();
         }
 

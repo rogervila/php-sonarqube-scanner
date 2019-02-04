@@ -39,4 +39,15 @@ $app = new \SonarScanner\App(
     new \SonarScanner\Device\Detector()
 );
 
-$app->run();
+try {
+    $app->run(getcwd());
+} catch (\SonarScanner\Exceptions\PropertiesFileNotFoundException $e) {
+    fwrite(
+        STDERR,
+        'You need to set up a sonar-project.properties file:' . PHP_EOL . PHP_EOL .
+            '    touch sonar-project.properties' . PHP_EOL . PHP_EOL .
+            'You can learn all about Sonar properties on https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner.' . PHP_EOL
+    );
+
+    die(1);
+}
