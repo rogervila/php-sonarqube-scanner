@@ -50,4 +50,11 @@ try {
     );
 
     die(1);
+} catch (\Exception $e) {
+    fwrite(
+        STDERR,
+        'Unexpected error.' . PHP_EOL . 'Please, check the project issues on https://github.com/rogervila/php-sonarqube-scanner/issues' . PHP_EOL
+    );
+
+    die(1);
 }
