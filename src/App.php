@@ -172,10 +172,10 @@ class App
             ? '.bat'
             : '';
 
-        echo "Running scanner...\n";
+        echo "Running scanner..." . PHP_EOL;
 
         exec(self::EXTRACT_PATH . $this->folderName . self::EXECUTION_ROUTE . $extension, $output);
 
-        echo implode("\n", $output) . "\n";
+        echo implode(PHP_EOL, $output) . PHP_EOL;
     }
 }
