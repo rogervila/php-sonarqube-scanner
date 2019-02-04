@@ -1,0 +1,60 @@
+#!/usr/bin/env php
+<?php
+
+if (!ini_get('date.timezone')) {
+    ini_set('date.timezone', 'UTC');
+}
+
+$autoloads = [
+    __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'autoload.php',
+    __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php',
+    __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php',
+];
+
+foreach ($autoloads as $file) {
+    if (file_exists($file)) {
+        define('COMPOSER_AUTOLOAD_FILE', $file);
+
+        break;
+    }
+}
+
+unset($file);
+unset($autoloads);
+
+if (!defined('COMPOSER_AUTOLOAD_FILE')) {
+    fwrite(
+        STDERR,
+        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+            '    composer install' . PHP_EOL . PHP_EOL .
+            'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    );
+
+    die(1);
+}
+
+require COMPOSER_AUTOLOAD_FILE;
+
+$app = new \SonarScanner\App(
+    new \SonarScanner\Device\Detector()
+);
+
+try {
+    $app->run(getcwd());
+} catch (\SonarScanner\Exceptions\PropertiesFileNotFoundException $e) {
+    fwrite(
+        STDERR,
+        'You need to set up a sonar-project.properties file:' . PHP_EOL . PHP_EOL .
+            '    touch sonar-project.properties' . PHP_EOL . PHP_EOL .
+            'You can learn all about Sonar properties on https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner.' . PHP_EOL
+    );
+
+    die(1);
+} catch (\Exception $e) {
+    fwrite(
+        STDERR,
+        'Unexpected error.' . PHP_EOL . 'Please, check the project issues on https://github.com/rogervila/php-sonarqube-scanner/issues' . PHP_EOL
+    );
+
+    die(1);
+}

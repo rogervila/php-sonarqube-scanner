@@ -1,0 +1,27 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_script:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev
+
+script:
+  - vendor/bin/phpunit
+  - chmod +x sonar-scanner
+  - touch sonar-project.properties
+  - php sonar-scanner
+  - sonar-scanner -Dsonar.projectKey=rogervila_php-sonarqube-scanner -Dsonar.sources=. -Dsonar.exclusions='tmp/**, vendor/**, tests/**' -Dsonar.php.tests.reportPath=junit-logfile.xml -Dsonar.php.coverage.reportPaths=clover.xml
+
+addons:
+  sonarcloud:
+    organization: "rogervila-github"
+    token:
+      secure: "zKPo2B8Sw1RAQLTpdAgeejocp0p/dmXJo+WBLOx19jpr9gORvJX1WlynDZqOVgXoMolebvMKmi02dK543sK17RIe6I2ytFukHqlrFYVHCuebcjD8UeY+uYhw2XPrzdYVbBDADvUExG0sJ3FUcdCu3M2fQkuhHCDCCKtYA2QeglAUlA8KaoQ3UwlSNhaHCrAvP1icZ9LDWI/X4n545wiva2ezTdGoVYeVZNWovKMByI8lq3qvidRga1gKV7d2w/Qm8ipbVCOd6yQJLF+a040nLLMTOpfpt36iU6ott/DD2X/Ib/TEMVHT6aVVJsc0iZ72nyFfjNgTxWOmSSKUhp+oBTvHg+1aA86kkfQuJUcXwxl63paf7aJ3pDEmzHJXB0k1qkkwwqEXNpkr+ecBkLPneLE0im6vkk7rbbae94Ep5AHP3NBQKS6N50YyWMjFnE2f4sEvmFAYbbN7IDDbkOhxQLhqJAl2eE1FN4DbtugF+wT59tqhyJDY/1twxe6Zydzr6jMTLNav9r+XsPh+O1Nx2IdDThemMSFUB0bWp6Y7NpvZTTgrT9tWUCIvBUnXpw3/kgwYi+gnEmaxEQR7NpJ9/5myoSEBzZpv76Svwu/LtfrN7VtAtoXnytS8zAfHsaQf02xwE3uUo0mL7zIUByKIl2n/zjDuWu5iybbmoHy+lFE="
