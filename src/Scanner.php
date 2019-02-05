@@ -15,7 +15,7 @@ class Scanner
     const FOLDER_PREFIX = 'sonar-scanner';
     const ZIP_PREFIX = 'sonar-scanner-cli';
     const FILE_SEPARATOR = '-';
-    const EXTRACT_PATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
+    const EXTRACT_ROUTE = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
     const EXECUTION_ROUTE = DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'sonar-scanner';
 
     /**
@@ -54,11 +54,18 @@ class Scanner
     private $options;
 
     /**
-     * @param Device $device
+     * @var string
      */
-    public function __construct(Device $device)
+    private $root;
+
+    /**
+     * @param string $root
+     */
+    public function __construct(string $root)
     {
-        $this->device = $device;
+        $this->root = $root;
+
+        $this->device = new Device;
         $this->zip = new \ZipArchive;
     }
 
@@ -128,7 +135,7 @@ class Scanner
     private function unzip()
     {
         if ($this->zip->open($this->zipFile) === true) {
-            $this->zip->extractTo(self::EXTRACT_PATH);
+            $this->zip->extractTo($this->root . self::EXTRACT_ROUTE);
             $this->zip->close();
         } else {
             throw new UnzipFailureException();
@@ -140,10 +147,10 @@ class Scanner
      */
     private function fixPermissions()
     {
-        echo "Asking for executable permissions...\n";
+        echo 'Asking for executable permissions...' . PHP_EOL;
 
         $files = Dir::scan(
-            self::EXTRACT_PATH . $this->folderName,
+            $this->root . self::EXTRACT_ROUTE . $this->folderName,
             [
                 'type' => 'file',
                 'skipDots' => true,
@@ -167,9 +174,9 @@ class Scanner
             ? '.bat'
             : '';
 
-        echo "Running scanner..." . PHP_EOL;
+        echo 'Running scanner...' . PHP_EOL;
 
-        exec(self::EXTRACT_PATH . $this->folderName . self::EXECUTION_ROUTE . $extension, $output);
+        exec($this->root . self::EXTRACT_ROUTE . $this->folderName . self::EXECUTION_ROUTE . $extension, $output);
 
         echo implode(PHP_EOL, $output) . PHP_EOL;
     }
