@@ -39,8 +39,11 @@ $app = new \Sonar\Scanner(
     new \Sonar\Device\Detector()
 );
 
+$options = new \Sonar\Options(getcwd());
+$options->parse($argv);
+
 try {
-    $app->run(getcwd());
+    $app->run($options);
 } catch (\Exception $e) {
     fwrite(
         STDERR,

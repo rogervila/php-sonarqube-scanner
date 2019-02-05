@@ -49,9 +49,9 @@ class Scanner
     private $zipFile;
 
     /**
-     * @var string
+     * @var Options
      */
-    private $executionPath;
+    private $options;
 
     /**
      * @param DeviceDetectorInterface $detector
@@ -65,9 +65,9 @@ class Scanner
     /**
      * @return void
      */
-    public function run(string $executionPath)
+    public function run(Options $options)
     {
-        $this->executionPath = $executionPath;
+        $this->options = $options;
 
         $this->os = $this->detector->getOperatingSystem();
 
