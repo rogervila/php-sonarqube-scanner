@@ -1,21 +1,20 @@
 <?php
 
-namespace SonarScanner;
+namespace Sonar;
 
-use SonarScanner\Contracts\DeviceDetectorInterface;
-use SonarScanner\Values\Version;
-use SonarScanner\Values\OperatingSystem;
-use SonarScanner\Exceptions\ZipFileNotFoundException;
-use SonarScanner\Exceptions\UnzipFailureException;
-use SonarScanner\Exceptions\PropertiesFileNotFoundException;
+use Sonar\Contracts\DeviceDetectorInterface;
+use Sonar\Values\OperatingSystem;
+use Sonar\Exceptions\ZipFileNotFoundException;
+use Sonar\Exceptions\UnzipFailureException;
+use Sonar\Exceptions\PropertiesFileNotFoundException;
 use Lead\Dir\Dir;
 
-class App
+class Scanner
 {
+    const VERSION = '3.3.0.1492';
     const FOLDER_PREFIX = 'sonar-scanner';
     const ZIP_PREFIX = 'sonar-scanner-cli';
     const FILE_SEPARATOR = '-';
-    const PROPERTIES_FILE = 'sonar-project.properties';
     const EXTRACT_PATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
     const EXECUTION_ROUTE = DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'sonar-scanner';
 
@@ -23,11 +22,6 @@ class App
      * @var DeviceDetectorInterface
      */
     private $detector;
-
-    /**
-     * @var Version
-     */
-    private $version;
 
     /**
      * @var ZipArchive;
@@ -75,8 +69,6 @@ class App
     {
         $this->executionPath = $executionPath;
 
-        $this->version = new Version(Version::DEFAULT_VERSION);
-
         $this->os = $this->detector->getOperatingSystem();
 
         $this->setZipName();
@@ -99,7 +91,7 @@ class App
     {
         $this->zipName = implode(self::FILE_SEPARATOR, [
             self::ZIP_PREFIX,
-            $this->version->getValue(),
+            self::VERSION,
             $this->os->getValue(),
         ]) . '.zip';
     }
@@ -111,7 +103,7 @@ class App
     {
         $this->folderName = implode(self::FILE_SEPARATOR, [
             self::FOLDER_PREFIX,
-            $this->version->getValue(),
+            self::VERSION,
             $this->os->getValue(),
         ]);
     }
@@ -171,10 +163,6 @@ class App
      */
     private function execute()
     {
-        if (!file_exists($this->executionPath . DIRECTORY_SEPARATOR . self::PROPERTIES_FILE)) {
-            throw new PropertiesFileNotFoundException();
-        }
-
         $extension = $this->os->equals(new OperatingSystem(OperatingSystem::WINDOWS))
             ? '.bat'
             : '';

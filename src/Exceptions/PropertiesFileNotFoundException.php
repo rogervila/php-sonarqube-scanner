@@ -1,6 +1,6 @@
 <?php
 
-namespace SonarScanner\Exceptions;
+namespace Sonar\Exceptions;
 
 class PropertiesFileNotFoundException extends \Exception
 {

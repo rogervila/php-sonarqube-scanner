@@ -1,9 +1,9 @@
 <?php
 
-namespace SonarScanner\Values;
+namespace Sonar\Values;
 
-use SonarScanner\Traits\HasValue;
-use SonarScanner\Exceptions\InvalidOperatingSystemException;
+use Sonar\Traits\HasValue;
+use Sonar\Exceptions\InvalidOperatingSystemException;
 
 class OperatingSystem
 {

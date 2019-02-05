@@ -1,6 +1,6 @@
 <?php
 
-namespace SonarScanner\Contracts;
+namespace Sonar\Contracts;
 
 interface DeviceDetectorInterface
 {

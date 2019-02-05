@@ -1,10 +1,10 @@
 <?php
 
-namespace SonarScanner\Device;
+namespace Sonar\Device;
 
-use SonarScanner\Contracts\DeviceDetectorInterface;
-use SonarScanner\Exceptions\InvalidOperatingSystemException;
-use SonarScanner\Values\OperatingSystem;
+use Sonar\Contracts\DeviceDetectorInterface;
+use Sonar\Exceptions\InvalidOperatingSystemException;
+use Sonar\Values\OperatingSystem;
 
 class Detector implements DeviceDetectorInterface
 {

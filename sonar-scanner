@@ -35,21 +35,12 @@ if (!defined('COMPOSER_AUTOLOAD_FILE')) {
 
 require COMPOSER_AUTOLOAD_FILE;
 
-$app = new \SonarScanner\App(
-    new \SonarScanner\Device\Detector()
+$app = new \Sonar\Scanner(
+    new \Sonar\Device\Detector()
 );
 
 try {
     $app->run(getcwd());
-} catch (\SonarScanner\Exceptions\PropertiesFileNotFoundException $e) {
-    fwrite(
-        STDERR,
-        'You need to set up a sonar-project.properties file:' . PHP_EOL . PHP_EOL .
-            '    touch sonar-project.properties' . PHP_EOL . PHP_EOL .
-            'You can learn all about Sonar properties on https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner.' . PHP_EOL
-    );
-
-    die(1);
 } catch (\Exception $e) {
     fwrite(
         STDERR,
