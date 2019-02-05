@@ -2,13 +2,6 @@
 
 namespace Sonar;
 
-use Sonar\Contracts\DeviceDetectorInterface;
-use Sonar\Values\OperatingSystem;
-use Sonar\Exceptions\ZipFileNotFoundException;
-use Sonar\Exceptions\UnzipFailureException;
-use Sonar\Exceptions\PropertiesFileNotFoundException;
-use Lead\Dir\Dir;
-
 class Options
 {
     /**
