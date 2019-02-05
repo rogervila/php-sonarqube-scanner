@@ -7,7 +7,7 @@ class Options
     /**
      * @var string
      */
-    private $executionPath;
+    private $basePath;
 
     /**
      * @var array
@@ -15,11 +15,11 @@ class Options
     private $arguments;
 
     /**
-     * @param string $executionPath
+     * @param string $basePath
      */
-    public function __construct(string $executionPath)
+    public function __construct(string $basePath)
     {
-        $this->executionPath = $executionPath;
+        $this->basePath = $basePath;
     }
 
     public function parse(array $arguments)

@@ -35,7 +35,7 @@ if (!defined('COMPOSER_AUTOLOAD_FILE')) {
 
 require COMPOSER_AUTOLOAD_FILE;
 
-$app = new \Sonar\Scanner(__DIR__);
+$app = new \Sonar\Scanner();
 
 $options = new \Sonar\Options(getcwd());
 

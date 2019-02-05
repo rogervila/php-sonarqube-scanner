@@ -15,7 +15,7 @@ class Scanner
     const FOLDER_PREFIX = 'sonar-scanner';
     const ZIP_PREFIX = 'sonar-scanner-cli';
     const FILE_SEPARATOR = '-';
-    const EXTRACT_ROUTE = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
+    const EXTRACT_ROUTE = DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
     const EXECUTION_ROUTE = DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'sonar-scanner';
 
     /**
@@ -53,18 +53,8 @@ class Scanner
      */
     private $options;
 
-    /**
-     * @var string
-     */
-    private $root;
-
-    /**
-     * @param string $root
-     */
-    public function __construct(string $root)
+    public function __construct()
     {
-        $this->root = $root;
-
         $this->device = new Device;
         $this->zip = new \ZipArchive;
     }
@@ -135,7 +125,7 @@ class Scanner
     private function unzip()
     {
         if ($this->zip->open($this->zipFile) === true) {
-            $this->zip->extractTo($this->root . self::EXTRACT_ROUTE);
+            $this->zip->extractTo(__DIR__ . self::EXTRACT_ROUTE);
             $this->zip->close();
         } else {
             throw new UnzipFailureException();
@@ -150,7 +140,7 @@ class Scanner
         echo 'Asking for executable permissions...' . PHP_EOL;
 
         $files = Dir::scan(
-            $this->root . self::EXTRACT_ROUTE . $this->folderName,
+            __DIR__ . self::EXTRACT_ROUTE . $this->folderName,
             [
                 'type' => 'file',
                 'skipDots' => true,
@@ -176,7 +166,7 @@ class Scanner
 
         echo 'Running scanner...' . PHP_EOL;
 
-        exec($this->root . self::EXTRACT_ROUTE . $this->folderName . self::EXECUTION_ROUTE . $extension, $output);
+        exec(__DIR__ . self::EXTRACT_ROUTE . $this->folderName . self::EXECUTION_ROUTE . $extension, $output);
 
         echo implode(PHP_EOL, $output) . PHP_EOL;
     }
