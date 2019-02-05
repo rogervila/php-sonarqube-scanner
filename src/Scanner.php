@@ -2,7 +2,7 @@
 
 namespace Sonar;
 
-use Sonar\Contracts\DeviceDetectorInterface;
+use Sonar\Device;
 use Sonar\Values\OperatingSystem;
 use Sonar\Exceptions\ZipFileNotFoundException;
 use Sonar\Exceptions\UnzipFailureException;
@@ -19,9 +19,9 @@ class Scanner
     const EXECUTION_ROUTE = DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'sonar-scanner';
 
     /**
-     * @var DeviceDetectorInterface
+     * @var DevicedeviceInterface
      */
-    private $detector;
+    private $device;
 
     /**
      * @var ZipArchive;
@@ -54,11 +54,11 @@ class Scanner
     private $options;
 
     /**
-     * @param DeviceDetectorInterface $detector
+     * @param Device $device
      */
-    public function __construct(DeviceDetectorInterface $detector)
+    public function __construct(Device $device)
     {
-        $this->detector = $detector;
+        $this->device = $device;
         $this->zip = new \ZipArchive;
     }
 
@@ -69,7 +69,7 @@ class Scanner
     {
         $this->options = $options;
 
-        $this->os = $this->detector->getOperatingSystem();
+        $this->os = $this->device->detect();
 
         $this->setZipName();
 
