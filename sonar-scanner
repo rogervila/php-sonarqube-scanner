@@ -38,6 +38,7 @@ require COMPOSER_AUTOLOAD_FILE;
 $app = new \Sonar\Scanner(__DIR__);
 
 $options = new \Sonar\Options(getcwd());
+
 $options->parse($argv);
 
 try {
