@@ -6,13 +6,13 @@
 
 # Run SonarQube Scanner with composer
 
+## Usage
+
 **Install the package as a dev requirement**
 
 ```
 composer install rogervila/php-sonarqube-scanner --dev
 ```
-
-> Make sure you have a `sonar-project.properties` on your project root!
 
 
 **Run with composer**
@@ -20,6 +20,18 @@ composer install rogervila/php-sonarqube-scanner --dev
 ```
 vendor/bin/sonar-scanner
 ```
+
+## Defaults
+
+In some cases, if the package finds missing properties, it will provide them automatically.
+
+| Property  | Default |
+|----|---|
+| sonar.projectKey  | adapted `composer.json` name property |
+| sonar.projectName | adapted `composer.json` name property |
+
+> Example: If this repository is scanned without `projectKey` or `projectName` properties, the result will be:
+> `$ sonar-scanner -Dsonar.projectKey=rogervila_php-sonarqube-scanner -Dsonar.projectName=php-sonarqube-scanner`
 
 ## License
 
