@@ -164,9 +164,12 @@ class Scanner
             ? '.bat'
             : '';
 
-        echo 'Running scanner...' . PHP_EOL;
+        $command = __DIR__ . self::EXTRACT_ROUTE . $this->folderName . self::EXECUTION_ROUTE . $extension . ' ' . $this->options->cli();
 
-        exec(__DIR__ . self::EXTRACT_ROUTE . $this->folderName . self::EXECUTION_ROUTE . $extension . ' ' . $this->options->cli(), $output);
+        echo 'Running scanner...' . PHP_EOL;
+        echo 'INFO: ' . $command . PHP_EOL;
+
+        exec($command, $output);
 
         echo implode(PHP_EOL, $output) . PHP_EOL;
     }
