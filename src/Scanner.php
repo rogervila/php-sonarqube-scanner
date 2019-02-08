@@ -166,7 +166,7 @@ class Scanner
 
         echo 'Running scanner...' . PHP_EOL;
 
-        exec(__DIR__ . self::EXTRACT_ROUTE . $this->folderName . self::EXECUTION_ROUTE . $extension, $output);
+        exec(__DIR__ . self::EXTRACT_ROUTE . $this->folderName . self::EXECUTION_ROUTE . $extension . ' ' . $this->options->cli(), $output);
 
         echo implode(PHP_EOL, $output) . PHP_EOL;
     }

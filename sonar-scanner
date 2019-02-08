@@ -5,22 +5,34 @@ if (!ini_get('date.timezone')) {
     ini_set('date.timezone', 'UTC');
 }
 
-$autoloads = [
+$paths = [
     __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'autoload.php',
     __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php',
     __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php',
 ];
 
-foreach ($autoloads as $file) {
+foreach ($paths as $file) {
     if (file_exists($file)) {
         define('COMPOSER_AUTOLOAD_FILE', $file);
+        break;
+    }
+}
 
+$paths = [
+    __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'composer.json',
+    __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'composer.json',
+    __DIR__ . DIRECTORY_SEPARATOR . 'composer.json',
+];
+
+foreach ($paths as $file) {
+    if (file_exists($file)) {
+        define('COMPOSER_CONFIG_FILE', $file);
         break;
     }
 }
 
 unset($file);
-unset($autoloads);
+unset($paths);
 
 if (!defined('COMPOSER_AUTOLOAD_FILE')) {
     fwrite(
@@ -38,6 +50,21 @@ require COMPOSER_AUTOLOAD_FILE;
 $app = new \Sonar\Scanner();
 
 $options = new \Sonar\Options(getcwd());
+
+if (defined('COMPOSER_CONFIG_FILE') && file_exists(COMPOSER_CONFIG_FILE)) {
+    $content = json_decode(file_get_contents(COMPOSER_CONFIG_FILE), true);
+
+    if (is_array($content)) {
+        $options->setComposerConfiguration($content);
+    } else {
+        fwrite(
+            STDERR,
+            'WARNING! project\'s composer.json file could not be parsed' . PHP_EOL
+        );
+    }
+
+    unset($content);
+}
 
 $options->parse($argv);
 
