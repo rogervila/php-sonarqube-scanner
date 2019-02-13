@@ -1,6 +1,6 @@
 <?php
 
-namespace SonarScanner\Traits;
+namespace Sonar\Traits;
 
 trait HasValue
 {

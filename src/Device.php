@@ -1,12 +1,11 @@
 <?php
 
-namespace SonarScanner\Device;
+namespace Sonar;
 
-use SonarScanner\Contracts\DeviceDetectorInterface;
-use SonarScanner\Exceptions\InvalidOperatingSystemException;
-use SonarScanner\Values\OperatingSystem;
+use Sonar\Exceptions\InvalidOperatingSystemException;
+use Sonar\Values\OperatingSystem;
 
-class Detector implements DeviceDetectorInterface
+class Device
 {
     private $service;
 
@@ -19,7 +18,7 @@ class Detector implements DeviceDetectorInterface
      * @return OperatingSystem
      * @throws InvalidOperatingSystemException
      */
-    public function getOperatingSystem()
+    public function detect()
     {
         if ($this->service->isOSX()) {
             return new OperatingSystem(OperatingSystem::OSX);

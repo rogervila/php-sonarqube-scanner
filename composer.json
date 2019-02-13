@@ -23,12 +23,12 @@
     },
     "autoload": {
         "psr-4": {
-            "SonarScanner\\": "src/"
+            "Sonar\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\SonarScanner\\": "tests/"
+            "Tests\\Sonar\\": "tests/"
         }
     },
     "config": {

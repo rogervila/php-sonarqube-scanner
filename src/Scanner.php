@@ -1,33 +1,27 @@
 <?php
 
-namespace SonarScanner;
+namespace Sonar;
 
-use SonarScanner\Contracts\DeviceDetectorInterface;
-use SonarScanner\Values\Version;
-use SonarScanner\Values\OperatingSystem;
-use SonarScanner\Exceptions\ZipFileNotFoundException;
-use SonarScanner\Exceptions\UnzipFailureException;
-use SonarScanner\Exceptions\PropertiesFileNotFoundException;
+use Sonar\Device;
+use Sonar\Values\OperatingSystem;
+use Sonar\Exceptions\ZipFileNotFoundException;
+use Sonar\Exceptions\UnzipFailureException;
+use Sonar\Exceptions\PropertiesFileNotFoundException;
 use Lead\Dir\Dir;
 
-class App
+class Scanner
 {
+    const VERSION = '3.3.0.1492';
     const FOLDER_PREFIX = 'sonar-scanner';
     const ZIP_PREFIX = 'sonar-scanner-cli';
     const FILE_SEPARATOR = '-';
-    const PROPERTIES_FILE = 'sonar-project.properties';
-    const EXTRACT_PATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
+    const EXTRACT_ROUTE = DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
     const EXECUTION_ROUTE = DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'sonar-scanner';
 
     /**
-     * @var DeviceDetectorInterface
+     * @var DevicedeviceInterface
      */
-    private $detector;
-
-    /**
-     * @var Version
-     */
-    private $version;
+    private $device;
 
     /**
      * @var ZipArchive;
@@ -55,29 +49,24 @@ class App
     private $zipFile;
 
     /**
-     * @var string
+     * @var Options
      */
-    private $executionPath;
+    private $options;
 
-    /**
-     * @param DeviceDetectorInterface $detector
-     */
-    public function __construct(DeviceDetectorInterface $detector)
+    public function __construct()
     {
-        $this->detector = $detector;
+        $this->device = new Device;
         $this->zip = new \ZipArchive;
     }
 
     /**
      * @return void
      */
-    public function run(string $executionPath)
+    public function run(Options $options)
     {
-        $this->executionPath = $executionPath;
+        $this->options = $options;
 
-        $this->version = new Version(Version::DEFAULT_VERSION);
-
-        $this->os = $this->detector->getOperatingSystem();
+        $this->os = $this->device->detect();
 
         $this->setZipName();
 
@@ -99,7 +88,7 @@ class App
     {
         $this->zipName = implode(self::FILE_SEPARATOR, [
             self::ZIP_PREFIX,
-            $this->version->getValue(),
+            self::VERSION,
             $this->os->getValue(),
         ]) . '.zip';
     }
@@ -111,7 +100,7 @@ class App
     {
         $this->folderName = implode(self::FILE_SEPARATOR, [
             self::FOLDER_PREFIX,
-            $this->version->getValue(),
+            self::VERSION,
             $this->os->getValue(),
         ]);
     }
@@ -136,7 +125,7 @@ class App
     private function unzip()
     {
         if ($this->zip->open($this->zipFile) === true) {
-            $this->zip->extractTo(self::EXTRACT_PATH);
+            $this->zip->extractTo(__DIR__ . self::EXTRACT_ROUTE);
             $this->zip->close();
         } else {
             throw new UnzipFailureException();
@@ -148,10 +137,10 @@ class App
      */
     private function fixPermissions()
     {
-        echo "Asking for executable permissions...\n";
+        echo 'Asking for executable permissions...' . PHP_EOL;
 
         $files = Dir::scan(
-            self::EXTRACT_PATH . $this->folderName,
+            __DIR__ . self::EXTRACT_ROUTE . $this->folderName,
             [
                 'type' => 'file',
                 'skipDots' => true,
@@ -171,17 +160,16 @@ class App
      */
     private function execute()
     {
-        if (!file_exists($this->executionPath . DIRECTORY_SEPARATOR . self::PROPERTIES_FILE)) {
-            throw new PropertiesFileNotFoundException();
-        }
-
         $extension = $this->os->equals(new OperatingSystem(OperatingSystem::WINDOWS))
             ? '.bat'
             : '';
 
-        echo "Running scanner..." . PHP_EOL;
+        $command = __DIR__ . self::EXTRACT_ROUTE . $this->folderName . self::EXECUTION_ROUTE . $extension . ' ' . $this->options->cli();
 
-        exec(self::EXTRACT_PATH . $this->folderName . self::EXECUTION_ROUTE . $extension, $output);
+        echo 'Running scanner...' . PHP_EOL;
+        echo 'INFO: ' . $command . PHP_EOL;
+
+        exec($command, $output);
 
         echo implode(PHP_EOL, $output) . PHP_EOL;
     }
