@@ -1,7 +1,10 @@
 <p align="center"><img width="250" src="https://i.imgur.com/xcIhGwP.png" alt="Run SonarQube Scanner with composer" /></p>
 
+[![Latest Stable Version](https://poser.pugx.org/rogervila/php-sonarqube-scanner/v/stable)](https://packagist.org/packages/rogervila/php-sonarqube-scanner)
+[![Total Downloads](https://poser.pugx.org/rogervila/php-sonarqube-scanner/downloads)](https://packagist.org/packages/rogervila/php-sonarqube-scanner)
 [![Build Status](https://travis-ci.org/rogervila/php-sonarqube-scanner.svg?branch=master)](https://travis-ci.org/rogervila/php-sonarqube-scanner)
 [![Build status](https://ci.appveyor.com/api/projects/status/weidwo98jcdrtkxm?svg=true)](https://ci.appveyor.com/project/roger-vila/php-sonarqube-scanner)
+
 
 
 # Run SonarQube Scanner with composer
@@ -11,7 +14,7 @@
 **Install the package as a dev requirement**
 
 ```
-composer install rogervila/php-sonarqube-scanner --dev
+composer require rogervila/php-sonarqube-scanner --dev
 ```
 
 
