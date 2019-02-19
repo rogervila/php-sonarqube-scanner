@@ -5,34 +5,11 @@ if (!ini_get('date.timezone')) {
     ini_set('date.timezone', 'UTC');
 }
 
-$paths = [
-    __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'autoload.php',
-    __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php',
-    __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php',
-];
+$file = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-foreach ($paths as $file) {
-    if (file_exists($file)) {
-        define('COMPOSER_AUTOLOAD_FILE', $file);
-        break;
-    }
+if (file_exists($file)) {
+    define('COMPOSER_AUTOLOAD_FILE', $file);
 }
-
-$paths = [
-    __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'composer.json',
-    __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'composer.json',
-    __DIR__ . DIRECTORY_SEPARATOR . 'composer.json',
-];
-
-foreach ($paths as $file) {
-    if (file_exists($file)) {
-        define('COMPOSER_CONFIG_FILE', $file);
-        break;
-    }
-}
-
-unset($file);
-unset($paths);
 
 if (!defined('COMPOSER_AUTOLOAD_FILE')) {
     fwrite(
@@ -44,6 +21,14 @@ if (!defined('COMPOSER_AUTOLOAD_FILE')) {
 
     die(1);
 }
+
+$file = getcwd() . DIRECTORY_SEPARATOR . 'composer.json';
+
+if (file_exists($file)) {
+    define('COMPOSER_CONFIG_FILE', $file);
+}
+
+unset($file);
 
 require COMPOSER_AUTOLOAD_FILE;
 
