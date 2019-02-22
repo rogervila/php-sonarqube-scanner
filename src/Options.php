@@ -41,6 +41,7 @@ class Options
     }
 
     /**
+     * @param  array $composer
      * @return void
      */
     public function setComposerConfiguration(array $composer)
@@ -49,6 +50,7 @@ class Options
     }
 
     /**
+     * @param  array $arguments
      * @return void
      */
     public function parse(array $arguments)
@@ -59,16 +61,22 @@ class Options
 
         $this->arguments = $arguments;
 
-        if (!$this->hasArgument(self::INLINE_PREFIX . self::PROJECT_KEY)
-            && !$this->propertiesFileHasOption(self::PROJECT_KEY)
-            && isset($this->composer['name'])) {
-            $this->setProjectKeyFromComposer();
+        if (isset($this->composer['name'])) {
+            $this->loadDefault(self::PROJECT_KEY, 'setProjectKeyFromComposer');
+            $this->loadDefault(self::PROJECT_NAME, 'setProjectNameFromComposer');
         }
+    }
 
-        if (!$this->hasArgument(self::INLINE_PREFIX . self::PROJECT_NAME)
-            && !$this->propertiesFileHasOption(self::PROJECT_NAME)
-            && isset($this->composer['name'])) {
-            $this->setProjectNameFromComposer();
+    /**
+     * @param  string $option
+     * @param  string $method
+     * @return void
+     */
+    private function loadDefault(string $option, string $method)
+    {
+        if (!$this->hasArgument(self::INLINE_PREFIX . $option)
+            && !$this->propertiesFileHasOption($option)) {
+            $this->{$method}();
         }
     }
 
@@ -80,6 +88,10 @@ class Options
         return implode(' ', $this->arguments);
     }
 
+    /**
+     * @param  string  $argument
+     * @return boolean
+     */
     private function hasArgument(string $argument)
     {
         return count(preg_grep('/^' . str_replace('.', '\.', $argument) . '/m', $this->arguments)) > 0;
