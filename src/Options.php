@@ -4,11 +4,21 @@ namespace Sonar;
 
 class Options
 {
+    const EDITION_COMMUNITY = 0;
+    const EDITION_DEVELOPER = 1;
+    const EDITION_ENTERPRISE = 2;
+    const EDITION_DATA_CENTER = 3;
+
     const PROPERTIES_FILE_NAME = 'sonar-project.properties';
     const INLINE_PREFIX = '-D';
     const LAUNCHER = 'sonar-scanner';
+
     const PROJECT_KEY = 'sonar.projectKey';
     const PROJECT_NAME = 'sonar.projectName';
+    const SOURCES = 'sonar.sources';
+    const EXCLUSIONS = 'sonar.exclusions';
+    const BRANCH_NAME = 'sonar.branch.name';
+    const BRANCH_TARGET = 'sonar.branch.target';
 
     /**
      * @var string
@@ -31,6 +41,16 @@ class Options
     private $composer = [];
 
     /**
+     * @var string
+     */
+    private $branch = '';
+
+    /**
+     * @var int
+     */
+    private $edition = self::EDITION_COMMUNITY;
+
+    /**
      * @param string $basePath
      */
     public function __construct(string $basePath)
@@ -50,6 +70,24 @@ class Options
     }
 
     /**
+     * @param  string $composer
+     * @return void
+     */
+    public function setSourceManagerBranch(string $branch)
+    {
+        $this->branch = $branch;
+    }
+
+    /**
+     * @param  int $edition
+     * @return void
+     */
+    public function setEdition(int $edition)
+    {
+        $this->edition = $edition;
+    }
+
+    /**
      * @param  array $arguments
      * @return void
      */
@@ -65,6 +103,14 @@ class Options
             $this->loadDefault(self::PROJECT_KEY, 'setProjectKeyFromComposer');
             $this->loadDefault(self::PROJECT_NAME, 'setProjectNameFromComposer');
         }
+
+        if (strlen($this->branch) > 0 && $this->edition > self::EDITION_COMMUNITY) {
+            $this->loadDefault(self::BRANCH_NAME, 'setProjectBranchName');
+            $this->loadDefault(self::BRANCH_TARGET, 'setProjectBranchTarget');
+        }
+
+        $this->loadDefault(self::SOURCES, 'setSourcesProperty');
+        $this->loadDefault(self::EXCLUSIONS, 'setExclusionsProperty');
     }
 
     /**
@@ -129,5 +175,37 @@ class Options
         if (isset($result[1])) {
             array_push($this->arguments, self::INLINE_PREFIX . self::PROJECT_NAME . '=' . $result[1]);
         }
+    }
+
+    /**
+     * @return void
+     */
+    private function setProjectBranchName()
+    {
+        array_push($this->arguments, self::INLINE_PREFIX . self::BRANCH_NAME . '=' . $this->branch);
+    }
+
+    /**
+     * @return void
+     */
+    private function setProjectBranchTarget()
+    {
+        array_push($this->arguments, self::INLINE_PREFIX . self::BRANCH_TARGET . '=' . $this->branch);
+    }
+
+    /**
+     * @return void
+     */
+    private function setSourcesProperty()
+    {
+        array_push($this->arguments, self::INLINE_PREFIX . self::SOURCES . '=' . $this->basePath);
+    }
+
+    /**
+     * @return void
+     */
+    private function setExclusionsProperty()
+    {
+        array_push($this->arguments, self::INLINE_PREFIX . self::EXCLUSIONS . '="vendor/**, node_modules/**, .scannerwork/**"');
     }
 }
