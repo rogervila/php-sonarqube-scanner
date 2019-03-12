@@ -36,6 +36,14 @@ $app = new \Sonar\Scanner();
 
 $options = new \Sonar\Options(getcwd());
 
+$git = new \NorwichTech\PHPGitBranch\GitBranch(getcwd(), new \NorwichTech\FileWrapper\FileWrapper);
+
+if (is_string($git->branch)) {
+    $options->setSourceManagerBranch($git->branch);
+}
+
+unset($git);
+
 if (defined('COMPOSER_CONFIG_FILE') && file_exists(COMPOSER_CONFIG_FILE)) {
     $content = json_decode(file_get_contents(COMPOSER_CONFIG_FILE), true);
 
