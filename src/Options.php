@@ -15,6 +15,7 @@ class Options
 
     const PROJECT_KEY = 'sonar.projectKey';
     const PROJECT_NAME = 'sonar.projectName';
+    const PROJECT_DESCRIPTION = 'sonar.projectDescription';
     const SOURCES = 'sonar.sources';
     const EXCLUSIONS = 'sonar.exclusions';
     const BRANCH_NAME = 'sonar.branch.name';
@@ -104,6 +105,10 @@ class Options
             $this->loadDefault(self::PROJECT_NAME, 'setProjectNameFromComposer');
         }
 
+        if (isset($this->composer['description'])) {
+            $this->loadDefault(self::PROJECT_DESCRIPTION, 'setProjectDescriptionFromComposer');
+        }
+
         if (strlen($this->branch) > 0 && $this->edition > self::EDITION_COMMUNITY) {
             $this->loadDefault(self::BRANCH_NAME, 'setProjectBranchName');
             $this->loadDefault(self::BRANCH_TARGET, 'setProjectBranchTarget');
@@ -122,7 +127,7 @@ class Options
     {
         if (!$this->hasArgument(self::INLINE_PREFIX . $option)
             && !$this->propertiesFileHasOption($option)) {
-            $this->{$method}();
+            call_user_func_array([$this, $method], []);
         }
     }
 
@@ -175,6 +180,14 @@ class Options
         if (isset($result[1])) {
             array_push($this->arguments, self::INLINE_PREFIX . self::PROJECT_NAME . '=' . $result[1]);
         }
+    }
+
+    /**
+     * @return void
+     */
+    private function setProjectDescriptionFromComposer()
+    {
+        array_push($this->arguments, self::INLINE_PREFIX . self::PROJECT_DESCRIPTION . '="'. $this->composer['description'] .'"');
     }
 
     /**
