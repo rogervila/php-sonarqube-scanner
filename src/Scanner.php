@@ -11,7 +11,7 @@ use Lead\Dir\Dir;
 
 class Scanner
 {
-    const VERSION = '3.3.0.1492';
+    const VERSION = '4.0.0.1744';
     const FOLDER_PREFIX = 'sonar-scanner';
     const ZIP_PREFIX = 'sonar-scanner-cli';
     const FILE_SEPARATOR = '-';
