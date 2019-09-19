@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/rogervila/php-sonarqube-scanner.svg?branch=master)](https://travis-ci.org/rogervila/php-sonarqube-scanner)
 [![Build status](https://ci.appveyor.com/api/projects/status/weidwo98jcdrtkxm?svg=true)](https://ci.appveyor.com/project/roger-vila/php-sonarqube-scanner)
 
+> [Test Project](https://github.com/rogervila/php-sonarqube-scanner-test) Badges [![Build Status](https://travis-ci.org/rogervila/php-sonarqube-scanner-test.svg?branch=master)](https://travis-ci.org/rogervila/php-sonarqube-scanner-test)
 
 
 # Run SonarQube Scanner with composer
@@ -32,6 +33,8 @@ In some cases, if the package finds missing properties, it will provide them aut
 |----|---|---|
 | sonar.projectKey  | adapted `composer.json` name property | `-Dsonar.projectKey=rogervila_php-sonarqube-scanner`
 | sonar.projectName | adapted `composer.json` name property | `-Dsonar.projectName=php-sonarqube-scanner`
+| sonar.sources | Base project path | `-Dsonar.sources=<PROJECT PATH>`
+| sonar.exclusions | Opininated exclusions based on composer projects usage | `-Dsonar.exclusions="vendor/**, node_modules/**, .scannerwork/**"`
 
 ## License
 
