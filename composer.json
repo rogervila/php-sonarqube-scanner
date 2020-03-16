@@ -20,7 +20,9 @@
         "tivie/php-os-detector": "^1.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
+        "creativestyle/app-http-server-mock": "^1.0",
+        "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+        "symfony/process": "^4.1"
     },
     "autoload": {
         "psr-4": {

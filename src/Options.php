@@ -34,7 +34,7 @@ class Options
     /**
      * @var array
      */
-    private $arguments;
+    private $arguments = [];
 
     /**
      * @var array
