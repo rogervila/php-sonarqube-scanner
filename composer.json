@@ -22,7 +22,7 @@
     "require-dev": {
         "creativestyle/app-http-server-mock": "^1.0",
         "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
-        "symfony/process": "^4.1"
+        "symfony/process": "^4.1 || ^5.0"
     },
     "autoload": {
         "psr-4": {
