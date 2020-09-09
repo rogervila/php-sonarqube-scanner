@@ -5,16 +5,14 @@ php:
   - 7.2
   - 7.3
   - 7.4
+  - 8.0
 
 cache:
   directories:
     - $HOME/.composer/cache
 
-before_script:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install --dev
-
 script:
+  - composer install
   - vendor/bin/phpunit
   - chmod +x sonar-scanner
   - touch sonar-project.properties
