@@ -5,10 +5,10 @@ clone_folder: C:\projects\app
 
 environment:
     matrix:
-        - php_ver: 8.0.0
-        - php_ver: 7.4.10
-        - php_ver: 7.3.22
-        - php_ver: 7.2.33
+        # - php_ver: 8.0.0
+        - php_ver: 7.4.13
+        - php_ver: 7.3.25
+        - php_ver: 7.2.34
         # - php_ver: 7.1.26
 
 cache:
@@ -31,7 +31,7 @@ install:
     - echo extension=php_curl.dll >> php.ini
     - echo extension=php_openssl.dll >> php.ini
     - echo extension=php_mbstring.dll >> php.ini
-    - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/download/1.10.10/composer.phar)
+    - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/download/2.0.7/composer.phar)
     - php C:\tools\composer.phar --version
     - cd C:\projects\app
 
