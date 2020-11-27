@@ -18,7 +18,6 @@
 composer require rogervila/php-sonarqube-scanner --dev
 ```
 
-
 **Run with composer**
 
 ```
