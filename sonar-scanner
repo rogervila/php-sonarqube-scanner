@@ -36,7 +36,7 @@ $app = new \Sonar\Scanner();
 
 $options = new \Sonar\Options(getcwd());
 
-$git = new \NorwichTech\PHPGitBranch\GitBranch(getcwd(), new \NorwichTech\FileWrapper\FileWrapper);
+$git = new \DanielJHarvey\PHPGitBranch\GitBranch(getcwd(), new \DanielJHarvey\FileWrapper\FileWrapper);
 
 if (is_string($git->branch)) {
     $options->setSourceManagerBranch($git->branch);
