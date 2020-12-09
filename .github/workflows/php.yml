@@ -45,4 +45,4 @@ jobs:
           run: touch sonar-project.properties
 
       -   name: Run scanner
-          run: vendor/bin/sonar-scanner -Dsonar.projectKey=rogervila_php-sonarqube-scanner -Dsonar.sources=. -Dsonar.exclusions='tmp/**, vendor/**, tests/**' -Dsonar.php.tests.reportPath=junit-logfile.xml -Dsonar.php.coverage.reportPaths=clover.xml
+          run: php sonar-scanner -Dsonar.projectKey=rogervila_php-sonarqube-scanner -Dsonar.sources=. -Dsonar.exclusions='tmp/**, vendor/**, tests/**' -Dsonar.php.tests.reportPath=junit-logfile.xml -Dsonar.php.coverage.reportPaths=clover.xml
