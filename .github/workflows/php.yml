@@ -12,10 +12,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
         php: [8.0, 7.4, 7.3, 7.2, 7.1]
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }}
 
     steps:
       -   name: Checkout code
@@ -32,8 +32,7 @@ jobs:
           run: composer selfupdate
 
       -   name: Install dependencies
-          run: |
-            composer update --prefer-dist --no-interaction
+          run: composer update --prefer-dist --no-interaction
 
       -   name: Execute tests
           run: vendor/bin/phpunit
@@ -41,8 +40,16 @@ jobs:
       -   name: Make sure scanner is executable
           run: chmod +x sonar-scanner
 
-      -   name: Check that sonar-project.properties is used
-          run: touch sonar-project.properties
+      -   name: Configure sonar-project.properties
+          if: matrix.os != "windows-latest"
+          run: |
+              touch sonar-project.properties && \
+              echo "# SonarQube Properties" > sonar-project.properties && \
+              echo "sonar.projectKey=rogervila_php-sonarqube-scanner" >> sonar-project.properties && \
+              echo "sonar.sources=." >> sonar-project.properties && \
+              echo "sonar.exclusions=tmp/**, vendor/**, tests/**" >> sonar-project.properties && \
+              echo "sonar.php.tests.reportPath=junit-logfile.xml" >> sonar-project.properties && \
+              echo "sonar.php.coverage.reportPaths=clover.xml" >> sonar-project.properties
 
       -   name: Run scanner
-          run: ./sonar-scanner -Dsonar.projectKey=rogervila_php-sonarqube-scanner -Dsonar.sources=. -Dsonar.exclusions="tmp/**, vendor/**, tests/**" -Dsonar.php.tests.reportPath=junit-logfile.xml -Dsonar.php.coverage.reportPaths=clover.xml
+          run: ./sonar-scanner
