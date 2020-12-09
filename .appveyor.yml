@@ -37,14 +37,14 @@ install:
   - echo extension=php_openssl.dll >> php.ini
   - echo extension=php_mbstring.dll >> php.ini
   - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/composer-stable.phar)
-  - php C:\tools\composer.phar --version
+  - php C:\tools\composer-stable.phar --version
   - cd C:\projects\app
 
 before_test:
   - cd C:\projects\app
-  - php C:\tools\composer.phar selfupdate
-  - php C:\tools\composer.phar update --optimize-autoloader --no-interaction --no-progress --prefer-stable --no-ansi
-  - php C:\tools\composer.phar info -D | sort
+  - php C:\tools\composer-stable.phar selfupdate
+  - php C:\tools\composer-stable.phar update --optimize-autoloader --no-interaction --no-progress --prefer-stable --no-ansi
+  - php C:\tools\composer-stable.phar info -D | sort
 
 test_script:
   - cd C:\projects\app
