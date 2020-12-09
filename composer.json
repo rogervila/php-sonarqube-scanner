@@ -16,7 +16,7 @@
     "require": {
         "ext-zip": "*",
         "crysalead/dir": "^2.0",
-        "norwichtech/php-git-branch": "^1.1",
+        "danieljharvey/php-git-branch": "^1.1",
         "tivie/php-os-detector": "^1.1"
     },
     "require-dev": {
