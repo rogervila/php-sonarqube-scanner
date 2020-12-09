@@ -1,0 +1,48 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+        php: [8.0, 7.4, 7.3, 7.2, 7.1]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+
+    steps:
+      -   name: Checkout code
+          uses: actions/checkout@v2
+
+      -   name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: ${{ matrix.php }}
+            extensions: zip, xdebug
+            coverage: xdebug
+
+      -   name: Update composer
+          run: composer selfupdate
+
+      -   name: Install dependencies
+          run: |
+            composer update --prefer-dist --no-interaction
+
+      -   name: Execute tests
+          run: vendor/bin/phpunit
+
+      -   name: Make sure scanner is executable
+          run: chmod +x sonar-scanner
+
+      -   name: Check that sonar-project.properties is used
+          run: touch sonar-project.properties
+
+      -   name: Run scanner
+          run: vendor/bin/sonar-scanner -Dsonar.projectKey=rogervila_php-sonarqube-scanner -Dsonar.sources=. -Dsonar.exclusions='tmp/**, vendor/**, tests/**' -Dsonar.php.tests.reportPath=junit-logfile.xml -Dsonar.php.coverage.reportPaths=clover.xml
