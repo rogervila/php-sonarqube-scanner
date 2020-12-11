@@ -1,10 +1,6 @@
 name: PHP Composer
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -18,38 +14,31 @@ jobs:
     name: PHP ${{ matrix.php }} - ${{ matrix.os }}
 
     steps:
-      -   name: Checkout code
-          uses: actions/checkout@v2
-
-      -   name: Setup PHP
-          uses: shivammathur/setup-php@v2.9.0
-          with:
-            php-version: ${{ matrix.php }}
-            extensions: zip, xdebug
-            coverage: xdebug
-
-      -   name: Update composer
-          run: composer selfupdate
-
-      -   name: Install dependencies
-          run: composer update --prefer-dist --no-interaction
-
-      -   name: Execute tests
-          run: vendor/bin/phpunit
-
-      -   name: Make sure scanner is executable
-          run: chmod +x sonar-scanner
-
-      -   name: Configure sonar-project.properties
-          if: matrix.os != "windows-latest"
-          run: |
-              touch sonar-project.properties && \
-              echo "# SonarQube Properties" > sonar-project.properties && \
-              echo "sonar.projectKey=rogervila_php-sonarqube-scanner" >> sonar-project.properties && \
-              echo "sonar.sources=." >> sonar-project.properties && \
-              echo "sonar.exclusions=tmp/**, vendor/**, tests/**" >> sonar-project.properties && \
-              echo "sonar.php.tests.reportPath=junit-logfile.xml" >> sonar-project.properties && \
-              echo "sonar.php.coverage.reportPaths=clover.xml" >> sonar-project.properties
-
-      -   name: Run scanner
-          run: ./sonar-scanner
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.9.0
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: zip, xdebug
+          coverage: xdebug
+      - name: Update composer
+        run: composer selfupdate
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction
+      - name: Execute tests
+        run: vendor/bin/phpunit
+      - name: Make sure scanner is executable
+        run: chmod +x sonar-scanner
+      - name: Configure sonar-project.properties
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: |
+          touch sonar-project.properties && \
+          echo "# SonarQube Properties" > sonar-project.properties && \
+          echo "sonar.projectKey=rogervila_php-sonarqube-scanner" >> sonar-project.properties && \
+          echo "sonar.sources=." >> sonar-project.properties && \
+          echo "sonar.exclusions=tmp/**, vendor/**, tests/**" >> sonar-project.properties && \
+          echo "sonar.php.tests.reportPath=junit-logfile.xml" >> sonar-project.properties && \
+          echo "sonar.php.coverage.reportPaths=clover.xml" >> sonar-project.properties
+      - name: Run scanner
+        run: ./sonar-scanner
