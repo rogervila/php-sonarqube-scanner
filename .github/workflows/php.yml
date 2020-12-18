@@ -36,10 +36,8 @@ jobs:
       - name: Make sure scanner is executable
         run: chmod +x sonar-scanner
 
-      - name: Configure sonar-project.properties for OSX and Ubuntu
-        if: ${{ matrix.os != 'windows-latest' }}
+      - name: Configure sonar-project.properties
         run: |
-          touch sonar-project.properties && \
           echo "# SonarQube Properties" > sonar-project.properties && \
           echo "sonar.host.url=https://sonarcloud.io" >> sonar-project.properties && \
           echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> sonar-project.properties && \
@@ -49,21 +47,6 @@ jobs:
           echo "sonar.exclusions=tmp/**, vendor/**, tests/**" >> sonar-project.properties && \
           echo "sonar.php.tests.reportPath=junit-logfile.xml" >> sonar-project.properties && \
           echo "sonar.php.coverage.reportPaths=clover.xml" >> sonar-project.properties
-
-      - name: Configure sonar-project.properties for Windows
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: |
-          (
-            echo "# SonarQube Properties"
-            echo "sonar.host.url=https://sonarcloud.io"
-            echo "sonar.login=${{ secrets.SONAR_TOKEN }}"
-            echo "sonar.projectKey=rogervila_php-sonarqube-scanner"
-            echo "sonar.organization=rogervila-github"
-            echo "sonar.sources=."
-            echo "sonar.exclusions=tmp/**, vendor/**, tests/**"
-            echo "sonar.php.tests.reportPath=junit-logfile.xml"
-            echo "sonar.php.coverage.reportPaths=clover.xml"
-          ) > sonar-project.properties
 
       - name: Run scanner
         run: ./sonar-scanner
