@@ -38,14 +38,14 @@ jobs:
 
       - name: Configure sonar-project.properties
         run: |
-          echo "# SonarQube Properties" > sonar-project.properties && \
-          echo "sonar.host.url=https://sonarcloud.io" >> sonar-project.properties && \
-          echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> sonar-project.properties && \
-          echo "sonar.projectKey=rogervila_php-sonarqube-scanner" >> sonar-project.properties && \
-          echo "sonar.organization=rogervila-github" >> sonar-project.properties && \
-          echo "sonar.sources=." >> sonar-project.properties && \
-          echo "sonar.exclusions=tmp/**, vendor/**, tests/**" >> sonar-project.properties && \
-          echo "sonar.php.tests.reportPath=junit-logfile.xml" >> sonar-project.properties && \
+          echo "# SonarQube Properties" > sonar-project.properties
+          echo "sonar.host.url=https://sonarcloud.io" >> sonar-project.properties
+          echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> sonar-project.properties
+          echo "sonar.projectKey=rogervila_php-sonarqube-scanner" >> sonar-project.properties
+          echo "sonar.organization=rogervila-github" >> sonar-project.properties
+          echo "sonar.sources=." >> sonar-project.properties
+          echo "sonar.exclusions=tmp/**, vendor/**, tests/**" >> sonar-project.properties
+          echo "sonar.php.tests.reportPath=junit-logfile.xml" >> sonar-project.properties
           echo "sonar.php.coverage.reportPaths=clover.xml" >> sonar-project.properties
 
       - name: Run scanner
