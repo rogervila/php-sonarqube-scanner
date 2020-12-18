@@ -49,4 +49,4 @@ jobs:
           echo "sonar.php.coverage.reportPaths=clover.xml" >> sonar-project.properties
 
       - name: Run scanner
-        run: ./sonar-scanner
+        run: php sonar-scanner
