@@ -2,11 +2,7 @@
 
 [![Latest Stable Version](https://poser.pugx.org/rogervila/php-sonarqube-scanner/v/stable)](https://packagist.org/packages/rogervila/php-sonarqube-scanner)
 [![Total Downloads](https://poser.pugx.org/rogervila/php-sonarqube-scanner/downloads)](https://packagist.org/packages/rogervila/php-sonarqube-scanner)
-[![Build Status](https://travis-ci.org/rogervila/php-sonarqube-scanner.svg?branch=master)](https://travis-ci.org/rogervila/php-sonarqube-scanner)
-[![Build status](https://ci.appveyor.com/api/projects/status/weidwo98jcdrtkxm?svg=true)](https://ci.appveyor.com/project/roger-vila/php-sonarqube-scanner)
-
-> [Test Project](https://github.com/rogervila/php-sonarqube-scanner-test) Badges [![Build Status](https://travis-ci.org/rogervila/php-sonarqube-scanner-test.svg?branch=master)](https://travis-ci.org/rogervila/php-sonarqube-scanner-test)
-
+[![Build Status](https://github.com/rogervila/php-sonarqube-scanner/workflows/build/badge.svg)](https://github.com/rogervila/php-sonarqube-scanner/actions)
 
 # Run SonarQube Scanner with composer
 
@@ -29,7 +25,7 @@ vendor/bin/sonar-scanner
 In some cases, if the package finds missing properties, it will provide them automatically.
 
 | Property  | Source | Example
-|----|---|---|
+|---|---|---|
 | sonar.projectKey  | adapted `composer.json` name property | `-Dsonar.projectKey=rogervila_php-sonarqube-scanner`
 | sonar.projectName | adapted `composer.json` name property | `-Dsonar.projectName=php-sonarqube-scanner`
 | sonar.sources | Base project path | `-Dsonar.sources=<PROJECT PATH>`

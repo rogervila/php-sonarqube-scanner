@@ -1,0 +1,55 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        php: [8.0, 7.4, 7.3, 7.2, 7.1]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.9.0
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: zip, xdebug
+          coverage: xdebug
+
+      - name: Update composer
+        run: composer selfupdate
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction
+
+      - name: Execute tests
+        run: vendor/bin/phpunit
+
+      - name: Make sure scanner is executable
+        run: chmod +x sonar-scanner
+
+      - name: Configure sonar-project.properties
+        run: |
+          echo "# SonarQube Properties" > sonar-project.properties
+          echo "sonar.host.url=https://sonarcloud.io" >> sonar-project.properties
+          echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> sonar-project.properties
+          echo "sonar.projectKey=rogervila_php-sonarqube-scanner" >> sonar-project.properties
+          echo "sonar.organization=rogervila-github" >> sonar-project.properties
+          echo "sonar.sources=." >> sonar-project.properties
+          echo "sonar.exclusions=tmp/**, vendor/**, tests/**" >> sonar-project.properties
+          echo "sonar.php.tests.reportPath=junit-logfile.xml" >> sonar-project.properties
+          echo "sonar.php.coverage.reportPaths=clover.xml" >> sonar-project.properties
+
+      - name: Run scanner
+        run: php sonar-scanner
