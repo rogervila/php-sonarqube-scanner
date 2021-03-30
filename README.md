@@ -22,11 +22,12 @@ vendor/bin/sonar-scanner
 
 ## Defaults
 
-In some cases, if the package finds missing properties, it will provide them automatically.
+If the package finds that there are missing properties, it will try provide them automatically from your project's `composer.json` file.
 
-| Property  | Source | Example
+| Property | Source | Example
 |---|---|---|
 | sonar.projectKey  | adapted `composer.json` name property | `-Dsonar.projectKey=rogervila_php-sonarqube-scanner`
+| sonar.projectDescription | adapted `composer.json` description property | `-Dsonar.projectDescription="Run SonarQube Scanner with composer"`
 | sonar.projectName | adapted `composer.json` name property | `-Dsonar.projectName=php-sonarqube-scanner`
 | sonar.sources | Base project path | `-Dsonar.sources=<PROJECT PATH>`
 | sonar.exclusions | Opininated exclusions based on composer projects usage | `-Dsonar.exclusions="vendor/**, node_modules/**, .scannerwork/**"`
