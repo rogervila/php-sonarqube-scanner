@@ -12,16 +12,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        php: [8.0, 7.4, 7.3, 7.2, 7.1]
+        php: ['8.2', '8.1', '8.0', '7.4', '7.3', '7.2', '7.1']
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.25.1
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: zip, xdebug
@@ -36,7 +36,7 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit
 
-      - name: Make sure scanner is executable
+      - name: Make sure the scanner is executable
         run: chmod +x sonar-scanner
 
       - name: Configure sonar-project.properties
